@@ -2,25 +2,24 @@ const path = require('path');
 const express = require('express')
 const http = require('http')
 const moment = require('moment');
-//const socketio = require('socket.io');
-import {Server} from 'socket.io';
+const socketio = require('socket.io');
 
 const PORT = process.env.PORT || 3000;
 
 const app = express();
 const httpServer = http.createServer(app);
-httpServer.listen(PORT);
-
-const io = new Server(httpServer);
-//const io=new socketio.Server(server);
-
-if(process.env.NODE_ENV==='production'){
-    app.use(express.static('public/build'));
-    //app.use(express.static(path.join(__dirname,"client","build")))
-}
 
 
-//app.use(express.static(path.join(__dirname, 'public')));
+//const io = new Server(httpServer);
+const io=socketio(httpServer);
+
+// if(process.env.NODE_ENV==='production'){
+//     app.use(express.static('public/build'));
+//     //app.use(express.static(path.join(__dirname,"client","build")))
+// }
+
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 let rooms = {};
 let socketroom = {};
@@ -121,4 +120,4 @@ io.on('connection', socket => {
 })
 
 
-//server.listen(PORT, () => console.log(`Server is up and running on port ${PORT}`));
+httpServer.listen(PORT, () => console.log(`Server is up and running on port ${PORT}`));
