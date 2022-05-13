@@ -2,15 +2,16 @@ const path = require('path');
 const express = require('express')
 const http = require('http')
 const moment = require('moment');
-const socketio = require('socket.io');
+//const socketio = require('socket.io');
+import {Server} from 'socket.io';
 
 const PORT = process.env.PORT || 3000;
 
 const app = express();
-const server = http.createServer(app);
-server.listen(PORT);
+const httpServer = http.createServer(app);
+httpServer.listen(PORT);
 
-const io = socketio(server);
+const io = new Server(httpServer);
 //const io=new socketio.Server(server);
 
 if(process.env.NODE_ENV==='production'){
@@ -120,4 +121,4 @@ io.on('connection', socket => {
 })
 
 
-server.listen(PORT, () => console.log(`Server is up and running on port ${PORT}`));
+//server.listen(PORT, () => console.log(`Server is up and running on port ${PORT}`));
